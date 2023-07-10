@@ -13,9 +13,15 @@ function ToastProvider({ children }) {
     setToasts((toasts) => toasts.filter((item) => item.id !== id));
   }, []);
 
+  const handleRemoveAllToasts = useCallback((id) => {
+    setToasts([]);
+  }, []);
+
   const providerValue = useMemo(() => {
-    return { toasts, handleAddToast, handleRemoveToast };
-  }, [handleAddToast, handleRemoveToast, toasts]);
+    return { toasts, handleAddToast, handleRemoveToast, handleRemoveAllToasts };
+  }, [handleAddToast, handleRemoveAllToasts, handleRemoveToast, toasts]);
+
+  useEscapeKeydown(handleRemoveAllToasts);
 
   return (
     <ToastContext.Provider value={providerValue}>
@@ -31,6 +37,21 @@ export function useToasts() {
   }
 
   return context;
+}
+
+function useEscapeKeydown(callback) {
+  React.useEffect(() => {
+    function handleEscapeKeydown(event) {
+      if (event.code === "Escape") {
+        callback();
+      }
+    }
+
+    window.addEventListener("keydown", handleEscapeKeydown);
+    return () => {
+      window.removeEventListener("keydown", handleEscapeKeydown);
+    };
+  }, [callback]);
 }
 
 export default ToastProvider;
