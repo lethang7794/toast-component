@@ -10,6 +10,7 @@ import {
 import VisuallyHidden from "../VisuallyHidden";
 
 import styles from "./Toast.module.css";
+import { useToasts } from "../ToastProvider";
 
 const ICONS_BY_VARIANT = {
   notice: Info,
@@ -18,7 +19,9 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast({ id, variant = "notice", children, handleRemoveToast }) {
+function Toast({ id, variant = "notice", children }) {
+  const { handleRemoveToast } = useToasts();
+
   const Icon = ICONS_BY_VARIANT[variant];
 
   return (
