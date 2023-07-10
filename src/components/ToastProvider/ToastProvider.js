@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from "react";
+import { useEscapeKeydown } from "../../hooks/useEscapeKeydown";
 
 const ToastContext = React.createContext();
 
@@ -37,21 +38,6 @@ export function useToasts() {
   }
 
   return context;
-}
-
-function useEscapeKeydown(callback) {
-  React.useEffect(() => {
-    function handleEscapeKeydown(event) {
-      if (event.code === "Escape") {
-        callback();
-      }
-    }
-
-    window.addEventListener("keydown", handleEscapeKeydown);
-    return () => {
-      window.removeEventListener("keydown", handleEscapeKeydown);
-    };
-  }, [callback]);
 }
 
 export default ToastProvider;
